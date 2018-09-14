@@ -27,7 +27,7 @@ class ViewController: UIViewController {
             print(r30[1])
             print(jas["material"]["CUNI"]["KOLANO"]["R"]["R30"][0].int!)
             }catch{
-                print("bla bla")
+                print("bla bla BLA")
             }
         }
         
