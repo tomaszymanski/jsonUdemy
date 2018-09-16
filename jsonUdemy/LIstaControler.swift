@@ -13,19 +13,20 @@ import SwiftyJSON
 
 class LIstaControler: UITableViewController {
     var materialArray:[JSON] = []
-    //var materials : [String] = []
+    var materials : JSON = JSON.null
     override func viewDidLoad() {
         super.viewDidLoad()
-
+title="JSON"
         if let bun = Bundle.main.path(forResource: "tabela", ofType: "json"){
             do{
                 let data = try Data(contentsOf: URL(fileURLWithPath: bun))
                 let jas = try JSON(data: data)
+                materials=jas["material"]
             let r30 = jas["material"]["CUNI"]["KOLANO"]["R"]["R30"].array!
-                for (key,subJson):(String, JSON) in jas["material"] {
-                 print(key)
-                    print(jas.type)
-                }
+//                for (key,subJson):(String, JSON) in jas["material"] {
+//                 print(key)
+//                    print(jas.type)
+//                }
                 
                 
                 materialArray=r30
@@ -43,15 +44,31 @@ class LIstaControler: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let ile = materialArray.count
+        let ile = materials.count
         print(ile)
         return ile
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath)
+        let row = indexPath.row
         
-        cell.textLabel?.text = materialArray[indexPath.row].stringValue
+        switch self.materials.type{
+            case .array:
+            cell.textLabel?.text="\(row)"
+            cell.detailTextLabel?.text = self.materials.description
+            case .dictionary:
+                let key:String = Array(self.materials.dictionaryValue.keys)[row]
+                let value = self.materials[key]
+                cell.textLabel?.text="\(key)"
+                cell.detailTextLabel?.text = value.description
+            default:
+            
+                cell.textLabel?.text = ""
+                cell.detailTextLabel?.text = self.materials.description
+        }
+        
+        //cell.textLabel?.text = materialArray[indexPath.row].stringValue
         
         return cell
     }
