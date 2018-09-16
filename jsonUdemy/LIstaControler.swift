@@ -12,7 +12,7 @@ import SwiftyJSON
 
 
 class LIstaControler: UITableViewController {
-    var materialArray:[JSON] = []
+    var materialArray: JSON = JSON.null
     var materials : JSON = JSON.null
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +29,7 @@ title="JSON"
 //                }
                 
                 
-                materialArray=r30
+               
                 print(r30)
             print(jas["material"]["CUNI"]["KOLANO"]["R"]["R30"][0].int!)
             }catch{
@@ -73,7 +73,14 @@ title="JSON"
         return cell
     }
     
-    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let keyi:String = Array(self.materials.dictionaryValue.keys)[indexPath.row]
+        //let value = self.materials[key]
+       materialArray=materials["\(keyi)"]["KOLANO"]["R"]
+        materials=materialArray
+       self.tableView.reloadData()
+    }
     
     
     
